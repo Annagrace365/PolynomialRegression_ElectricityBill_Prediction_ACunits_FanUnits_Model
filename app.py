@@ -1,0 +1,13 @@
+import streamlit as st
+import joblib
+from sklearn.preprocessing import PolynomialFeatures
+
+model=joblib.load("polynomial_regression_electricitybill_prediction_model.pkl")
+st.title("Electricity Bill Prediction Based On AC Units and Fan Units")
+ac_units=st.number_input("Enter AC electricity consumption (in units) : ", min_value=1.0, value=100.0,max_value=149.0)
+fan_units=st.number_input("Enter Fan electricity consumption (in units) : ", min_value=1.0, value=100.0,max_value=149.0)
+if st.button("Predict"):
+  poly=PolynomialFeatures()
+  input_poly=poly.fit_transform([[ac_units,fan_units]])
+  prediction=model.predict(input_poly)
+  st.success(f"Predicted Electricity Bill : {prediction[0]:.2f}")
